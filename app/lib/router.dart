@@ -1,6 +1,6 @@
+import 'package:five_wheel/views/home/home.screen.dart';
+import 'package:five_wheel/views/splash/splash.screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bootstrap_app/views/home/home.screen.dart';
-import 'package:flutter_bootstrap_app/views/splash/splash.screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 

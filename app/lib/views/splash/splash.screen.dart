@@ -1,6 +1,6 @@
+import 'package:five_wheel/router.dart';
+import 'package:five_wheel/views/home/home.screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bootstrap_app/router.dart';
-import 'package:flutter_bootstrap_app/views/home/home.screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SplashRoute extends ConsumerWidget {
