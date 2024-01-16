@@ -1,0 +1,131 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model game_levels {
+  id             String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  level_name     String?
+  session_levels session_levels[]
+  user_games     user_games[]
+}
+
+model game_platforms {
+  id       String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  game_id  String?    @db.Uuid
+  platform platform?
+  games    games?     @relation(fields: [game_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  sessions sessions[]
+}
+
+model games {
+  id               String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name             String
+  max_coop_players Int
+  is_crossplatform Boolean?
+  game_platforms   game_platforms[]
+  user_games       user_games[]
+}
+
+model languages {
+  id                String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  full_name         String              @unique
+  short_name        String              @unique
+  session_languages session_languages[]
+  user_languages    user_languages[]
+}
+
+model session_languages {
+  session_id  String    @db.Uuid
+  language_id String    @db.Uuid
+  languages   languages @relation(fields: [language_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  sessions    sessions  @relation(fields: [session_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([session_id, language_id])
+}
+
+model session_levels {
+  session_id  String      @db.Uuid
+  level_id    String      @db.Uuid
+  game_levels game_levels @relation(fields: [level_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  sessions    sessions    @relation(fields: [session_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([session_id, level_id])
+}
+
+model session_search_matches {
+  session_id        String   @db.Uuid
+  user_id           String   @db.Uuid
+  has_joinded       Boolean?
+  has_been_accepted Boolean?
+  sessions          sessions @relation(fields: [session_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users             users    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([session_id, user_id])
+}
+
+model sessions {
+  id                        String                   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  owner_id                  String?                  @db.Uuid
+  game_platform_id          String?                  @db.Uuid
+  coop_players_search_count Int?
+  is_open                   Boolean?
+  created_at                DateTime                 @default(now()) @db.Timestamptz(6)
+  session_languages         session_languages[]
+  session_levels            session_levels[]
+  session_search_matches    session_search_matches[]
+  game_platforms            game_platforms?          @relation(fields: [game_platform_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users                     users?                   @relation(fields: [owner_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model user_games {
+  user_id     String      @db.Uuid
+  game_id     String      @db.Uuid
+  level_id    String      @db.Uuid
+  games       games       @relation(fields: [game_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  game_levels game_levels @relation(fields: [level_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users       users       @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([user_id, game_id, level_id])
+}
+
+model user_languages {
+  user_id     String    @db.Uuid
+  language_id String    @db.Uuid
+  languages   languages @relation(fields: [language_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users       users     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([user_id, language_id])
+}
+
+model user_platforms {
+  id                String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id           String?   @db.Uuid
+  platform          platform?
+  platform_username String
+  users             users?    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model users {
+  id                     String                   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  username               String                   @unique
+  email                  String                   @unique
+  password               String
+  created_at             DateTime                 @default(now()) @db.Timestamptz(6)
+  updated_at             DateTime                 @default(now()) @db.Timestamptz(6)
+  session_search_matches session_search_matches[]
+  sessions               sessions[]
+  user_games             user_games[]
+  user_languages         user_languages[]
+  user_platforms         user_platforms[]
+}
+
+enum platform {
+  STEAM
+  PSN
+  EA
+}
