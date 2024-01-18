@@ -1,5 +1,6 @@
 import 'package:five_wheel/gen/strings.g.dart';
 import 'package:five_wheel/router.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,8 +12,18 @@ void main() async {
   LocaleSettings.useDeviceLocale();
   // Supabase
   await Supabase.initialize(
-    url: 'https://xyzcompany.supabase.co',
-    anonKey: 'public-anon-key',
+    url: 'https://geqomjbjuurwiqgylymp.supabase.co',
+    anonKey: const String.fromEnvironment('SUPABASE_KEY'),
+    authOptions: const FlutterAuthClientOptions(
+      authFlowType: AuthFlowType.pkce,
+    ),
+    realtimeClientOptions: const RealtimeClientOptions(
+      logLevel: kReleaseMode ? RealtimeLogLevel.error : RealtimeLogLevel.info,
+    ),
+    storageOptions: const StorageClientOptions(
+      retryAttempts: 10,
+    ),
+    debug: true,
   );
   // App
   runApp(TranslationProvider(child: const ProviderScope(child: MyApp())));
