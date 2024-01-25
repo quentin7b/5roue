@@ -1,22 +1,22 @@
 import 'package:five_wheel/models/game.model.dart';
-import 'package:five_wheel/providers/user_games.provider.dart';
+import 'package:five_wheel/providers/user_favorite_games.provider.dart';
 import 'package:five_wheel/widgets/game_card.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// A horizontal list of games cards
-class GamesGrid extends ConsumerWidget {
+class FavoriteGamesGrid extends ConsumerWidget {
   /// Callback when a game is tapped
   final Function(Game game)? onGameTap;
 
-  const GamesGrid({
+  const FavoriteGamesGrid({
     super.key,
     this.onGameTap,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final games = ref.watch(userGamesProvider);
+    final games = ref.watch(userFavoriteGamesProvider);
     return LayoutBuilder(
       builder: (context, constraints) {
         return games.when(
@@ -28,19 +28,21 @@ class GamesGrid extends ConsumerWidget {
               crossAxisCount: columnCout,
               children: data
                   .map(
-                    (game) => GestureDetector(
-                      child: GameCard(game: game),
-                      onTap: onGameTap != null ? () => onGameTap!(game) : null,
+                    (game) => MouseRegion(
+                      cursor: SystemMouseCursors.click,
+                      child: GestureDetector(
+                        child: GameCard(game: game),
+                        onTap:
+                            onGameTap != null ? () => onGameTap!(game) : null,
+                      ),
                     ),
                   )
                   .toList(),
             );
           },
           error: (error, stackTrace) {
-            // print the errror and stack trace
-            print(error);
-            print(stackTrace);
-            return Center(child: Text(error.toString()));
+            debugPrintStack(stackTrace: stackTrace);
+            return Text(error.toString());
           },
           loading: () {
             return const Center(child: CircularProgressIndicator());

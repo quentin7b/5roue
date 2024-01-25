@@ -21,7 +21,8 @@ class Games extends _$Games {
     state = AsyncData(
       _games
           .where(
-              (game) => game.name.toLowerCase().contains(filter.toLowerCase()))
+            (game) => game.name.toLowerCase().contains(filter.toLowerCase()),
+          )
           .toList(),
     );
   }

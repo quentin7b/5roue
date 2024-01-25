@@ -7,11 +7,13 @@ import 'package:five_wheel/widgets/platform_icon.widget.dart';
 import 'package:flutter/material.dart';
 
 class GameCard extends StatelessWidget {
+  final bool showTitle;
   final Game game;
 
   const GameCard({
     super.key,
     required this.game,
+    this.showTitle = true,
   });
 
   @override
@@ -25,6 +27,7 @@ class GameCard extends StatelessWidget {
           child: Stack(
             children: [
               ClipRRect(
+                borderRadius: BorderRadius.circular(8.0),
                 child: ImageFiltered(
                   imageFilter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                   child: CachedNetworkImage(
@@ -52,20 +55,21 @@ class GameCard extends StatelessWidget {
                     mainAxisSize: MainAxisSize.max,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8.0),
-                            color: Colors.white,
-                          ),
-                          child: Text(
-                            game.name,
-                            style: Theme.of(context).textTheme.labelLarge,
+                      if (showTitle)
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8.0),
+                              color: Colors.white.withOpacity(.9),
+                            ),
+                            child: Text(
+                              game.name,
+                              style: Theme.of(context).textTheme.labelLarge,
+                            ),
                           ),
                         ),
-                      ),
                       Align(
                         alignment: Alignment.centerRight,
                         child: Row(

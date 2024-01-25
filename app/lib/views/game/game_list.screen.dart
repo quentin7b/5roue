@@ -14,6 +14,7 @@ class GameListRoute extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
+      appBar: AppBar(),
       body: SafeArea(
         child: Padding(
           // TODO: consts
@@ -22,10 +23,13 @@ class GameListRoute extends ConsumerWidget {
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SearchField(
-                onSearch: (search) {
-                  ref.read(gamesProvider.notifier).filter(search);
-                },
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: SearchField(
+                  onSearch: (search) {
+                    ref.read(gamesProvider.notifier).filter(search);
+                  },
+                ),
               ),
               Expanded(
                 child: AvailableGamesList(

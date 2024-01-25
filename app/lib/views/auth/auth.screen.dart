@@ -74,6 +74,7 @@ class AuthRouteState extends ConsumerState<AuthRoute> {
                 ),
                 TextField(
                   controller: _passwordController,
+                  obscureText: true,
                 ),
                 TextField(
                   controller: _usernameController,

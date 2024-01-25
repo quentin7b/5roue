@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 1
-/// Strings: 1
+/// Strings: 3
 ///
-/// Built on 2024-01-17 at 09:08 UTC
+/// Built on 2024-01-25 at 15:34 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -148,6 +148,18 @@ class Translations implements BaseTranslations<AppLocale, Translations> {
 
 	// Translations
 	String get appName => 'Flutter Bootstrap';
+	late final _StringsLanguagesEn languages = _StringsLanguagesEn._(_root);
+}
+
+// Path: languages
+class _StringsLanguagesEn {
+	_StringsLanguagesEn._(this._root);
+
+	final Translations _root; // ignore: unused_field
+
+	// Translations
+	String get en => 'English';
+	String get fr => 'French';
 }
 
 /// Flat map(s) containing all translations.
@@ -157,6 +169,8 @@ extension on Translations {
 	dynamic _flatMapFunction(String path) {
 		switch (path) {
 			case 'appName': return 'Flutter Bootstrap';
+			case 'languages.en': return 'English';
+			case 'languages.fr': return 'French';
 			default: return null;
 		}
 	}

@@ -1,5 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:five_wheel/models/game.model.dart';
+import 'package:five_wheel/models/game_session.model.dart';
 import 'package:five_wheel/models/user.model.dart' as f_w;
 import 'package:five_wheel/services/user.service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -26,7 +27,7 @@ class SupabaseUserService implements UserService {
   }
 
   @override
-  Future<List<Game>> getGames({required String userId}) async {
+  Future<List<Game>> getFavoriteGames({required String userId}) async {
     final r = await client
         .from('user_game')
         .select('id, platform, game(*)')
@@ -40,6 +41,37 @@ class SupabaseUserService implements UserService {
             'platforms': e.map((e) => e['platform']).toList(),
           }),
         )
+        .toList();
+  }
+
+  @override
+  Future<List<GameSession>> getSessions({
+    required String ownerId,
+    bool onlyActive = true,
+  }) async {
+    final gameSessions = await client
+        .from('session')
+        .select(
+          'id, owner_id, search_player_max_count, is_open, game(*)',
+        )
+        .eq('owner_id', ownerId)
+        .eq('is_active', onlyActive);
+    final gameSessionsLanguages = await client
+        .from('session_criteria_language')
+        .select('session_id, language')
+        .inFilter('session_id', gameSessions.map((e) => e['id']).toList());
+
+    List<Map<String, dynamic>> gameSessionsWithLanguages =
+        gameSessions.toList();
+    for (final l in gameSessionsLanguages) {
+      final gameSession = gameSessionsWithLanguages
+          .firstWhereOrNull((e) => e['id'] == l['session_id']);
+      if (gameSession != null) {
+        gameSession['language'] = l['language'];
+      }
+    }
+    return gameSessionsWithLanguages
+        .map((e) => GameSession.fromJson(e))
         .toList();
   }
 }

@@ -31,10 +31,10 @@ class SupabaseGameService implements GameService {
   Future<Game> getGame({required String gameId}) async {
     final r = await client
         .from('game')
-        .select('*, game_platform(*)')
+        .select('*, game_platform(platform)')
         .eq('id', gameId);
     // One row per platform
-    final platforms = r.map((e) => e['game_platform']);
+    final platforms = r.map((e) => e['game_platform'][0]['platform']).toList();
     final firstRow = r.first;
     firstRow.remove('game_platform');
     return Game.fromJson({

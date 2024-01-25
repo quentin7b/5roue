@@ -1,7 +1,9 @@
 import 'package:five_wheel/services/auth.service.dart';
 import 'package:five_wheel/services/game.service.dart';
+import 'package:five_wheel/services/session.service.dart';
 import 'package:five_wheel/services/supabase/supabase_auth.service.dart';
 import 'package:five_wheel/services/supabase/supabase_game.service.dart';
+import 'package:five_wheel/services/supabase/supabase_session.service.dart';
 import 'package:five_wheel/services/supabase/supabase_user.service.dart';
 import 'package:five_wheel/services/user.service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -21,4 +23,8 @@ final userServiceProvider = Provider<UserService>(
 
 final gameServiceProvider = Provider<GameService>(
   (ref) => SupabaseGameService(ref.read(_supabaseClientProvider)),
+);
+
+final sessionServiceProvider = Provider<SessionService>(
+  (ref) => SupabaseSessionService(ref.read(_supabaseClientProvider)),
 );

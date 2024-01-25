@@ -1,3 +1,7 @@
 {
-    "appName": "Flutter Bootstrap"
+    "appName": "Flutter Bootstrap",
+    "languages": {
+        "en": "English",
+        "fr": "French"
+    }
 }

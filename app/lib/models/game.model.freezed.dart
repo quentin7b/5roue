@@ -168,7 +168,7 @@ class _$GameImpl implements _Game {
       required this.pictureUrl,
       required this.isCrossPlatform,
       required this.maxCoopPlayers,
-      required final List<Platform> platforms})
+      final List<Platform> platforms = const []})
       : _platforms = platforms;
 
   factory _$GameImpl.fromJson(Map<String, dynamic> json) =>
@@ -188,6 +188,7 @@ class _$GameImpl implements _Game {
   final List<Platform> _platforms;
 // App specific fields
   @override
+  @JsonKey()
   List<Platform> get platforms {
     if (_platforms is EqualUnmodifiableListView) return _platforms;
     // ignore: implicit_dynamic_type
@@ -248,7 +249,7 @@ abstract class _Game implements Game {
       required final String pictureUrl,
       required final bool isCrossPlatform,
       required final int maxCoopPlayers,
-      required final List<Platform> platforms}) = _$GameImpl;
+      final List<Platform> platforms}) = _$GameImpl;
 
   factory _Game.fromJson(Map<String, dynamic> json) = _$GameImpl.fromJson;
 

@@ -38,6 +38,7 @@ class AvailableGamesList extends ConsumerWidget {
         );
       },
       error: (error, stackTrace) {
+        debugPrintStack(stackTrace: stackTrace);
         return Text(error.toString());
       },
       loading: () {

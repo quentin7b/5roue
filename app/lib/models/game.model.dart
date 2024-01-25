@@ -15,7 +15,7 @@ class Game with _$Game {
     required bool isCrossPlatform,
     required int maxCoopPlayers,
     // App specific fields
-    required List<Platform> platforms,
+    @Default([]) List<Platform> platforms,
   }) = _Game;
 
   factory Game.fromJson(Map<String, Object?> json) => _$GameFromJson(json);
