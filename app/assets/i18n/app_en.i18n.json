@@ -2,6 +2,12 @@
     "appName": "Flutter Bootstrap",
     "languages": {
         "en": "English",
-        "fr": "French"
+        "fr": "French",
+        "es": "Spanish",
+        "pt": "Portuguese",
+        "pl": "Polish",
+        "ge": "German",
+        "tr": "Turkish",
+        "ua": "Ukrainian"
     }
 }

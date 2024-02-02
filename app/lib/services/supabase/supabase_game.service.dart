@@ -53,7 +53,7 @@ class SupabaseGameService implements GameService {
   Future<List<GameLevel>> getGameLevels({required String gameId}) {
     return client
         .from('game_level')
-        .select('id, name')
+        .select('id, name, game_order')
         .eq('game_id', gameId)
         .then((value) => value.map((row) => GameLevel.fromJson(row)).toList());
   }

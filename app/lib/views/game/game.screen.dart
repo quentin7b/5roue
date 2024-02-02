@@ -10,6 +10,7 @@ import 'package:five_wheel/router.dart';
 import 'package:five_wheel/views/session/new_session.screen.dart';
 import 'package:five_wheel/widgets/image_palette_gradient.widget.dart';
 import 'package:five_wheel/widgets/platform_icon.widget.dart';
+import 'package:five_wheel/widgets/rouded_back_button.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
@@ -93,22 +94,16 @@ class GameView extends StatelessWidget {
             pinned: true,
             expandedHeight: constraints.maxHeight / 2.2,
             flexibleSpace: FlexibleSpaceBar(
-              background: CachedNetworkImage(
-                imageUrl: game.pictureUrl,
-                fit: BoxFit.cover,
-              ),
-            ),
-            leading: Container(
-              margin: const EdgeInsets.only(top: 8, left: 8),
-              child: ClipOval(
-                child: Material(
-                  color: Colors.white.withOpacity(.7),
-                  child: IconButton(
-                    icon: const Icon(Icons.arrow_back),
-                    onPressed: onBackTap,
-                  ),
+              background: Hero(
+                tag: game.id,
+                child: CachedNetworkImage(
+                  imageUrl: game.pictureUrl,
+                  fit: BoxFit.cover,
                 ),
               ),
+            ),
+            leading: RoundedBackButton(
+              onTap: onBackTap,
             ),
           ),
           SliverFillRemaining(

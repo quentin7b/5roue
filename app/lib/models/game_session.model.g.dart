@@ -42,4 +42,10 @@ Map<String, dynamic> _$$GameSessionImplToJson(_$GameSessionImpl instance) =>
 const _$LanguageEnumMap = {
   Language.fr: 'fr',
   Language.en: 'en',
+  Language.es: 'es',
+  Language.pt: 'pt',
+  Language.pl: 'pl',
+  Language.ge: 'ge',
+  Language.tr: 'tr',
+  Language.ua: 'ua',
 };

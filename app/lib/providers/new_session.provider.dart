@@ -4,6 +4,7 @@ import 'package:five_wheel/models/game_session.model.dart';
 import 'package:five_wheel/models/language.model.dart';
 import 'package:five_wheel/providers/services.provider.dart';
 import 'package:five_wheel/providers/user.provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:uuid/uuid.dart';
 
@@ -40,17 +41,7 @@ class NewSession extends _$NewSession {
 }
 
 @riverpod
-class NewSessionCreator extends _$NewSessionCreator {
-  @override
-  AsyncValue<GameSession> build() {
-    _createSession();
-    return const AsyncValue.loading();
-  }
-
-  void _createSession() async {
-    final session = ref.read(newSessionProvider);
-    state = await AsyncValue.guard(
-      () => ref.read(sessionServiceProvider).createOrUpdate(session: session),
-    );
-  }
+Future<GameSession> newSessionCreator(Ref ref) async {
+  final session = ref.read(newSessionProvider);
+  return ref.read(sessionServiceProvider).createOrUpdate(session: session);
 }

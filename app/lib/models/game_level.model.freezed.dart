@@ -22,6 +22,8 @@ GameLevel _$GameLevelFromJson(Map<String, dynamic> json) {
 mixin _$GameLevel {
   String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
+  @JsonKey(name: 'game_order')
+  int get order => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -34,7 +36,7 @@ abstract class $GameLevelCopyWith<$Res> {
   factory $GameLevelCopyWith(GameLevel value, $Res Function(GameLevel) then) =
       _$GameLevelCopyWithImpl<$Res, GameLevel>;
   @useResult
-  $Res call({String id, String name});
+  $Res call({String id, String name, @JsonKey(name: 'game_order') int order});
 }
 
 /// @nodoc
@@ -52,6 +54,7 @@ class _$GameLevelCopyWithImpl<$Res, $Val extends GameLevel>
   $Res call({
     Object? id = null,
     Object? name = null,
+    Object? order = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -62,6 +65,10 @@ class _$GameLevelCopyWithImpl<$Res, $Val extends GameLevel>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      order: null == order
+          ? _value.order
+          : order // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -74,7 +81,7 @@ abstract class _$$GameLevelImplCopyWith<$Res>
       __$$GameLevelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String name});
+  $Res call({String id, String name, @JsonKey(name: 'game_order') int order});
 }
 
 /// @nodoc
@@ -90,6 +97,7 @@ class __$$GameLevelImplCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? name = null,
+    Object? order = null,
   }) {
     return _then(_$GameLevelImpl(
       id: null == id
@@ -100,6 +108,10 @@ class __$$GameLevelImplCopyWithImpl<$Res>
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
+      order: null == order
+          ? _value.order
+          : order // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -108,7 +120,10 @@ class __$$GameLevelImplCopyWithImpl<$Res>
 
 @JsonSerializable(fieldRename: FieldRename.snake)
 class _$GameLevelImpl implements _GameLevel {
-  const _$GameLevelImpl({required this.id, required this.name});
+  const _$GameLevelImpl(
+      {required this.id,
+      required this.name,
+      @JsonKey(name: 'game_order') required this.order});
 
   factory _$GameLevelImpl.fromJson(Map<String, dynamic> json) =>
       _$$GameLevelImplFromJson(json);
@@ -117,10 +132,13 @@ class _$GameLevelImpl implements _GameLevel {
   final String id;
   @override
   final String name;
+  @override
+  @JsonKey(name: 'game_order')
+  final int order;
 
   @override
   String toString() {
-    return 'GameLevel(id: $id, name: $name)';
+    return 'GameLevel(id: $id, name: $name, order: $order)';
   }
 
   @override
@@ -129,12 +147,13 @@ class _$GameLevelImpl implements _GameLevel {
         (other.runtimeType == runtimeType &&
             other is _$GameLevelImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.name, name) || other.name == name));
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.order, order) || other.order == order));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, name);
+  int get hashCode => Object.hash(runtimeType, id, name, order);
 
   @JsonKey(ignore: true)
   @override
@@ -152,7 +171,9 @@ class _$GameLevelImpl implements _GameLevel {
 
 abstract class _GameLevel implements GameLevel {
   const factory _GameLevel(
-      {required final String id, required final String name}) = _$GameLevelImpl;
+      {required final String id,
+      required final String name,
+      @JsonKey(name: 'game_order') required final int order}) = _$GameLevelImpl;
 
   factory _GameLevel.fromJson(Map<String, dynamic> json) =
       _$GameLevelImpl.fromJson;
@@ -161,6 +182,9 @@ abstract class _GameLevel implements GameLevel {
   String get id;
   @override
   String get name;
+  @override
+  @JsonKey(name: 'game_order')
+  int get order;
   @override
   @JsonKey(ignore: true)
   _$$GameLevelImplCopyWith<_$GameLevelImpl> get copyWith =>

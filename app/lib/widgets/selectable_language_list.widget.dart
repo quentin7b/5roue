@@ -17,6 +17,8 @@ class SelectableLanguagesList extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final languages = List.of(Language.values)..sortBy((l) => l.name(context));
     return ListView.builder(
+      padding: EdgeInsets.zero,
+      physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemCount: languages.length,
       itemBuilder: (context, index) {

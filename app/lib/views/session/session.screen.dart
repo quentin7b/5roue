@@ -1,9 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:five_wheel/extensions/gorouter.extension.dart';
 import 'package:five_wheel/models/game_session.model.dart';
 import 'package:five_wheel/models/language.model.dart';
 import 'package:five_wheel/providers/session.provider.dart';
+import 'package:five_wheel/router.dart';
 import 'package:five_wheel/widgets/game_card.widget.dart';
 import 'package:five_wheel/widgets/image_palette_gradient.widget.dart';
+import 'package:five_wheel/widgets/rouded_back_button.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -47,6 +50,9 @@ class SessionRoute extends ConsumerWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
+        leading: RoundedBackButton(
+          onTap: () => ref.read(routerProvider).maybePop(),
+        ),
       ),
       extendBodyBehindAppBar: true,
       body: s.when(

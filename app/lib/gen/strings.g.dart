@@ -4,9 +4,9 @@
 /// To regenerate, run: `dart run slang`
 ///
 /// Locales: 1
-/// Strings: 3
+/// Strings: 9
 ///
-/// Built on 2024-01-26 at 23:46 UTC
+/// Built on 2024-02-02 at 21:30 UTC
 
 // coverage:ignore-file
 // ignore_for_file: type=lint
@@ -160,6 +160,12 @@ class _StringsLanguagesEn {
 	// Translations
 	String get en => 'English';
 	String get fr => 'French';
+	String get es => 'Spanish';
+	String get pt => 'Portuguese';
+	String get pl => 'Polish';
+	String get ge => 'German';
+	String get tr => 'Turkish';
+	String get ua => 'Ukrainian';
 }
 
 /// Flat map(s) containing all translations.
@@ -171,6 +177,12 @@ extension on Translations {
 			case 'appName': return 'Flutter Bootstrap';
 			case 'languages.en': return 'English';
 			case 'languages.fr': return 'French';
+			case 'languages.es': return 'Spanish';
+			case 'languages.pt': return 'Portuguese';
+			case 'languages.pl': return 'Polish';
+			case 'languages.ge': return 'German';
+			case 'languages.tr': return 'Turkish';
+			case 'languages.ua': return 'Ukrainian';
 			default: return null;
 		}
 	}

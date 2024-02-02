@@ -1,9 +1,16 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:collection/collection.dart';
+import 'package:five_wheel/extensions/gorouter.extension.dart';
 import 'package:five_wheel/models/game_session.model.dart';
 import 'package:five_wheel/models/language.model.dart';
+import 'package:five_wheel/providers/game_level_widget_builder.provider.dart';
 import 'package:five_wheel/providers/game_levels.provider.dart';
 import 'package:five_wheel/providers/new_session.provider.dart';
-import 'package:five_wheel/widgets/game_card.widget.dart';
+import 'package:five_wheel/router.dart';
+import 'package:five_wheel/views/session/session.screen.dart';
+import 'package:five_wheel/widgets/image_palette_gradient.widget.dart';
 import 'package:five_wheel/widgets/mate_slider.widget.dart';
+import 'package:five_wheel/widgets/rouded_back_button.widget.dart';
 import 'package:five_wheel/widgets/selectable_game_levels_list.widget.dart';
 import 'package:five_wheel/widgets/selectable_language_list.widget.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +34,8 @@ class NewSessionRoute extends ConsumerStatefulWidget {
 }
 
 class NewSessionRouteState extends ConsumerState<NewSessionRoute> {
+  bool isCreating = false;
+
   @override
   void initState() {
     super.initState();
@@ -40,148 +49,264 @@ class NewSessionRouteState extends ConsumerState<NewSessionRoute> {
 
   @override
   Widget build(BuildContext context) {
-    final createSession = ref.watch(newSessionProvider);
+    final localSession = ref.watch(newSessionProvider);
+    AsyncValue<GameSession>? createdSessionFuture;
+    if (isCreating) {
+      createdSessionFuture = ref.watch(newSessionCreatorProvider);
+    }
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: const Text('Démarrer une session'),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: RoundedBackButton(
+          onTap: () => ref.read(routerProvider).maybePop(),
+        ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: createSession.game == null
-            ? const Center(
-                child: CircularProgressIndicator(),
-              )
-            : Column(
-                children: [
-                  // Game list card
-                  GameCard(
-                    game: createSession.game!,
-                    type: GameCardType.line,
+      body: localSession.game == null
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : Stack(
+              children: [
+                ImagePaletteGradient(
+                  imageProvider: CachedNetworkImageProvider(
+                    localSession.game!.pictureUrl,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    child: Wrap(
-                      spacing: 8,
-                      runSpacing: 8,
-                      alignment: WrapAlignment.center,
-                      children: [
-                        Chip(
-                          label: Text(
-                            '${createSession.maxPlayersCount} joueurs',
-                          ),
-                        ),
-                        Chip(
-                          label: Text(
-                            createSession.levelsCriteria
-                                .map((e) => e.name)
-                                .join(' ,'),
-                          ),
-                        ),
-                        Chip(
-                          label: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: createSession.languagesCriteria
-                                .map((e) => e.icon(context))
-                                .toList(),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Divider(),
-                          // Palyer count
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              'Tu recherches combien de joueurs ?',
-                              style: Theme.of(context).textTheme.titleLarge,
-                            ),
-                          ),
-                          Row(
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Expanded(
-                                child: MateSlider(
-                                  value: createSession.maxPlayersCount,
-                                  min: 1,
-                                  max: createSession.game!.maxCoopPlayers - 1,
-                                  onChanged: (newValue) {
-                                    ref
-                                        .read(newSessionProvider.notifier)
-                                        .setMaxPlayersCount(newValue.toInt());
-                                  },
+                              Hero(
+                                tag: localSession.game!.id,
+                                child: CachedNetworkImage(
+                                  imageUrl: localSession.game!.pictureUrl,
+                                  fit: BoxFit.cover,
+                                  height: 300,
                                 ),
                               ),
-                              CircleAvatar(
+                              Padding(
+                                padding: const EdgeInsets.all(16),
                                 child: Text(
-                                  '${createSession.maxPlayersCount}',
-                                  style: Theme.of(context).textTheme.bodyLarge,
+                                  'Tu recherches combien de joueurs ?',
+                                  style: Theme.of(context).textTheme.titleLarge,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: MateSlider(
+                                        value: localSession.maxPlayersCount,
+                                        min: 1,
+                                        max: localSession.game!.maxCoopPlayers -
+                                            1,
+                                        onChanged: (newValue) {
+                                          ref
+                                              .read(newSessionProvider.notifier)
+                                              .setMaxPlayersCount(
+                                                newValue.toInt(),
+                                              );
+                                        },
+                                      ),
+                                    ),
+                                    CircleAvatar(
+                                      child: Text(
+                                        '${localSession.maxPlayersCount}',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              // Criterias
+                              const Divider(),
+                              Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Text(
+                                  'Quels niveaux ?',
+                                  style: Theme.of(context).textTheme.titleLarge,
+                                ),
+                              ),
+                              ref
+                                  .watch(
+                                    levelsForGameProvider(
+                                      gameId: localSession.game!.id,
+                                    ),
+                                  )
+                                  .when(
+                                    data: (levels) => Padding(
+                                      padding: const EdgeInsets.all(8),
+                                      child: SelectableGameLevelsList(
+                                        levels: levels,
+                                        itemBuilder: ref.watch(
+                                          itemBuilderForGameProvider(
+                                            gameId: localSession.game!.id,
+                                          ),
+                                        ),
+                                        onChange: (levels) => ref
+                                            .read(newSessionProvider.notifier)
+                                            .setLevels(levels),
+                                      ),
+                                    ),
+                                    error: (error, stackTrace) {
+                                      debugPrintStack(stackTrace: stackTrace);
+                                      return Text(error.toString());
+                                    },
+                                    loading: () =>
+                                        const CircularProgressIndicator(),
+                                  ),
+                              const Divider(),
+                              Padding(
+                                padding: const EdgeInsets.all(16),
+                                child: Text(
+                                  'Et quelles langues pour tes lasts ?',
+                                  style: Theme.of(context).textTheme.titleLarge,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: SelectableLanguagesList(
+                                  onChange: (languages) => ref
+                                      .read(newSessionProvider.notifier)
+                                      .setLanguages(languages),
                                 ),
                               ),
                             ],
                           ),
-                          // Criterias
-                          const Divider(),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              'Quels niveaux ?',
-                              style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                      ),
+                      Container(
+                        decoration: const BoxDecoration(
+                          border: Border(top: BorderSide(color: Colors.black)),
+                        ),
+                        child: Column(
+                          children: [
+                            NewSessionSummary(
+                              session: localSession,
                             ),
-                          ),
-                          ref
-                              .watch(
-                                levelsForGameProvider(
-                                  gameId: createSession.game!.id,
-                                ),
-                              )
-                              .when(
-                                data: (levels) => SelectableGameLevelsList(
-                                  levels: levels,
-                                  onChange: (levels) => ref
-                                      .read(newSessionProvider.notifier)
-                                      .setLevels(levels),
-                                ),
-                                error: (error, stackTrace) {
-                                  debugPrintStack(stackTrace: stackTrace);
-                                  return Text(error.toString());
+                            Container(
+                              width: double.infinity,
+                              height: 48,
+                              margin: const EdgeInsets.all(16),
+                              child: ElevatedButton.icon(
+                                onPressed: () {
+                                  setState(() {
+                                    isCreating = true;
+                                  });
                                 },
-                                loading: () =>
-                                    const CircularProgressIndicator(),
+                                icon: const Icon(Icons.play_arrow_outlined),
+                                label: Text(
+                                  'Lancer la session pour ${localSession.game!.name}',
+                                ),
                               ),
-                          const Divider(),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              'Et quelles langues pour tes lasts ?',
-                              style: Theme.of(context).textTheme.titleLarge,
                             ),
-                          ),
-                          SelectableLanguagesList(
-                            onChange: (languages) => ref
-                                .read(newSessionProvider.notifier)
-                                .setLanguages(languages),
-                          ),
-                        ],
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                createdSessionFuture?.when(
+                      data: (createdSession) {
+                        Future(() {
+                          ref.read(routerProvider).pushReplacement(
+                                SessionRoute.getRouteName(createdSession.id),
+                                extra: createdSession,
+                              );
+                        });
+                        return null;
+                      },
+                      error: (error, stackTrace) {
+                        return null;
+                      },
+                      loading: () => Container(
+                        child: const Center(child: CircularProgressIndicator()),
+                      ),
+                    ) ??
+                    const SizedBox.shrink(),
+              ],
+            ),
+    );
+  }
+}
+
+class NewSessionSummary extends ConsumerWidget {
+  final GameSession session;
+
+  const NewSessionSummary({
+    super.key,
+    required this.session,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16),
+      child: Wrap(
+        spacing: 8,
+        runSpacing: 8,
+        alignment: WrapAlignment.center,
+        children: [
+          Chip(
+            label: Text(
+              '${session.maxPlayersCount} joueurs',
+            ),
+          ),
+          if (session.levelsCriteria.isNotEmpty)
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text('/'),
+                ...session.levelsCriteria
+                    .map(
+                      (e) => ref
+                          .read(
+                            itemBuilderForGameProvider(
+                              gameId: session.game!.id,
+                            ),
+                          )
+                          ?.call(e),
+                    )
+                    .whereNotNull()
+                    .map(
+                      (e) => Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 4,
+                        ),
+                        child: e,
                       ),
                     ),
-                  ),
-                  Container(
-                    width: double.infinity,
-                    height: 48,
-                    margin: const EdgeInsets.all(16),
-                    child: ElevatedButton.icon(
-                      onPressed: () {},
-                      icon: const Icon(Icons.play_arrow_outlined),
-                      label: const Text('Lancer la session'),
+              ],
+            ),
+          if (session.languagesCriteria.isNotEmpty)
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text('/'),
+                ...session.languagesCriteria
+                    .map(
+                      (l) => l.icon(context),
+                    )
+                    .whereNotNull()
+                    .map(
+                      (e) => Container(
+                        width: 42,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 4,
+                        ),
+                        child: e,
+                      ),
                     ),
-                  ),
-                ],
-              ),
+              ],
+            ),
+        ],
       ),
     );
   }
