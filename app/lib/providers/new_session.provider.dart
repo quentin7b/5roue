@@ -1,4 +1,5 @@
 import 'package:five_wheel/models/game.model.dart';
+import 'package:five_wheel/models/game_level.model.dart';
 import 'package:five_wheel/models/game_session.model.dart';
 import 'package:five_wheel/models/language.model.dart';
 import 'package:five_wheel/providers/services.provider.dart';
@@ -31,6 +32,10 @@ class NewSession extends _$NewSession {
 
   void setLanguages(List<Language>? languages) {
     state = state.copyWith(languagesCriteria: languages ?? []);
+  }
+
+  void setLevels(List<GameLevel>? levels) {
+    state = state.copyWith(levelsCriteria: levels ?? []);
   }
 }
 

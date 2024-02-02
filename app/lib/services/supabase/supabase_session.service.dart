@@ -53,4 +53,18 @@ class SupabaseSessionService implements SessionService {
       'languages_criteria': sessionLanguages.map((e) => e['language']).toList(),
     });
   }
+
+  @override
+  Future<void> play({required String sessionId}) async {
+    await client
+        .from('session')
+        .update({'is_active': true}).eq('id', sessionId);
+  }
+
+  @override
+  Future<void> pause({required String sessionId}) async {
+    await client
+        .from('session')
+        .update({'is_active': false}).eq('id', sessionId);
+  }
 }

@@ -7,4 +7,10 @@ abstract class SessionService {
   Future<GameSession> getSession({
     required String sessionId,
   });
+  Future<void> play({
+    required String sessionId,
+  });
+  Future<void> pause({
+    required String sessionId,
+  });
 }

@@ -53,7 +53,9 @@ class SearchFieldState extends State<SearchField> {
           borderRadius: BorderRadius.circular(6),
         ),
         hintText: 'Rechercher un jeu',
-        filled: false,
+        fillColor: Colors.white.withOpacity(1),
+        hoverColor: Colors.white.withOpacity(.6),
+        filled: true,
         suffixIcon: IconButton(
           icon: Icon(Icons.search, color: Theme.of(context).primaryColor),
           onPressed: () => _onSearch(_controller.text),

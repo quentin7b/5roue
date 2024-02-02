@@ -2,7 +2,6 @@ import 'package:five_wheel/models/game.model.dart';
 import 'package:five_wheel/models/game_session.model.dart';
 import 'package:five_wheel/views/auth/auth.screen.dart';
 import 'package:five_wheel/views/game/game.screen.dart';
-import 'package:five_wheel/views/game/game_list.screen.dart';
 import 'package:five_wheel/views/home/home.screen.dart';
 import 'package:five_wheel/views/session/new_session.screen.dart';
 import 'package:five_wheel/views/session/session.screen.dart';
@@ -35,15 +34,6 @@ final routerProvider = Provider<GoRouter>(
           ),
         ),
         GoRoute(
-          path: GameListRoute.routeName,
-          pageBuilder: (context, state) {
-            debugPrint('GameListRoute: ${state.uri}');
-            return const MaterialPage(
-              child: GameListRoute(),
-            );
-          },
-        ),
-        GoRoute(
           path: GameRoute.routeName,
           pageBuilder: (context, state) {
             debugPrint('GameRoute: ${state.uri}');
@@ -60,6 +50,17 @@ final routerProvider = Provider<GoRouter>(
           },
         ),
         GoRoute(
+          path: NewSessionRoute.routeName,
+          pageBuilder: (context, state) {
+            final GameSession? initialSession = state.extra as GameSession?;
+            return MaterialPage(
+              child: NewSessionRoute(
+                initialValue: initialSession,
+              ),
+            );
+          },
+        ),
+        GoRoute(
           path: SessionRoute.routeName,
           pageBuilder: (context, state) {
             final sessionId =
@@ -69,17 +70,6 @@ final routerProvider = Provider<GoRouter>(
               child: SessionRoute(
                 sessionId: sessionId,
                 session: session,
-              ),
-            );
-          },
-        ),
-        GoRoute(
-          path: NewSessionRoute.routeName,
-          pageBuilder: (context, state) {
-            final GameSession? initialSession = state.extra as GameSession?;
-            return MaterialPage(
-              child: NewSessionRoute(
-                initialValue: initialSession,
               ),
             );
           },

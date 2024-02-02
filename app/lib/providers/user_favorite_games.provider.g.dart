@@ -6,13 +6,13 @@ part of 'user_favorite_games.provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$userFavoriteGamesHash() => r'542cd6925b841b662346ba7d64ed82761549e8ac';
+String _$userFavoriteGamesHash() => r'85ca0fbe032735ce6d680ae2f99f16e7d3ec078e';
 
-/// See also [UserFavoriteGames].
-@ProviderFor(UserFavoriteGames)
+/// See also [userFavoriteGames].
+@ProviderFor(userFavoriteGames)
 final userFavoriteGamesProvider =
-    NotifierProvider<UserFavoriteGames, AsyncValue<List<Game>>>.internal(
-  UserFavoriteGames.new,
+    AutoDisposeFutureProvider<List<Game>>.internal(
+  userFavoriteGames,
   name: r'userFavoriteGamesProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
@@ -21,6 +21,6 @@ final userFavoriteGamesProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$UserFavoriteGames = Notifier<AsyncValue<List<Game>>>;
+typedef UserFavoriteGamesRef = AutoDisposeFutureProviderRef<List<Game>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

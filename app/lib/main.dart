@@ -39,7 +39,13 @@ class MyApp extends ConsumerWidget {
       locale: TranslationProvider.of(context).flutterLocale,
       supportedLocales: AppLocaleUtils.supportedLocales,
       localizationsDelegates: GlobalMaterialLocalizations.delegates,
-      theme: ThemeData(useMaterial3: true, fontFamily: 'NotoSans'),
+      theme: ThemeData(
+        useMaterial3: true,
+        fontFamily: 'NotoSans',
+        sliderTheme: const SliderThemeData(
+          showValueIndicator: ShowValueIndicator.always,
+        ),
+      ),
       routerConfig: ref.read(routerProvider),
     );
   }

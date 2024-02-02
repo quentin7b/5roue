@@ -6,11 +6,11 @@ part of 'games.provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$gamesHash() => r'0ab0d058ac31eb07aa41d352793d5a63b5c0174a';
+String _$gamesHash() => r'348f2ae1ed75b2e448979cfb87116fbc3dbdb2a4';
 
 /// See also [Games].
 @ProviderFor(Games)
-final gamesProvider = NotifierProvider<Games, AsyncValue<List<Game>>>.internal(
+final gamesProvider = AsyncNotifierProvider<Games, List<Game>>.internal(
   Games.new,
   name: r'gamesProvider',
   debugGetCreateSourceHash:
@@ -19,6 +19,6 @@ final gamesProvider = NotifierProvider<Games, AsyncValue<List<Game>>>.internal(
   allTransitiveDependencies: null,
 );
 
-typedef _$Games = Notifier<AsyncValue<List<Game>>>;
+typedef _$Games = AsyncNotifier<List<Game>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -26,6 +26,7 @@ mixin _$Game {
   bool get isCrossPlatform => throw _privateConstructorUsedError;
   int get maxCoopPlayers =>
       throw _privateConstructorUsedError; // App specific fields
+  bool get isFavorite => throw _privateConstructorUsedError;
   List<Platform> get platforms => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -44,6 +45,7 @@ abstract class $GameCopyWith<$Res> {
       String pictureUrl,
       bool isCrossPlatform,
       int maxCoopPlayers,
+      bool isFavorite,
       List<Platform> platforms});
 }
 
@@ -65,6 +67,7 @@ class _$GameCopyWithImpl<$Res, $Val extends Game>
     Object? pictureUrl = null,
     Object? isCrossPlatform = null,
     Object? maxCoopPlayers = null,
+    Object? isFavorite = null,
     Object? platforms = null,
   }) {
     return _then(_value.copyWith(
@@ -88,6 +91,10 @@ class _$GameCopyWithImpl<$Res, $Val extends Game>
           ? _value.maxCoopPlayers
           : maxCoopPlayers // ignore: cast_nullable_to_non_nullable
               as int,
+      isFavorite: null == isFavorite
+          ? _value.isFavorite
+          : isFavorite // ignore: cast_nullable_to_non_nullable
+              as bool,
       platforms: null == platforms
           ? _value.platforms
           : platforms // ignore: cast_nullable_to_non_nullable
@@ -109,6 +116,7 @@ abstract class _$$GameImplCopyWith<$Res> implements $GameCopyWith<$Res> {
       String pictureUrl,
       bool isCrossPlatform,
       int maxCoopPlayers,
+      bool isFavorite,
       List<Platform> platforms});
 }
 
@@ -127,6 +135,7 @@ class __$$GameImplCopyWithImpl<$Res>
     Object? pictureUrl = null,
     Object? isCrossPlatform = null,
     Object? maxCoopPlayers = null,
+    Object? isFavorite = null,
     Object? platforms = null,
   }) {
     return _then(_$GameImpl(
@@ -150,6 +159,10 @@ class __$$GameImplCopyWithImpl<$Res>
           ? _value.maxCoopPlayers
           : maxCoopPlayers // ignore: cast_nullable_to_non_nullable
               as int,
+      isFavorite: null == isFavorite
+          ? _value.isFavorite
+          : isFavorite // ignore: cast_nullable_to_non_nullable
+              as bool,
       platforms: null == platforms
           ? _value._platforms
           : platforms // ignore: cast_nullable_to_non_nullable
@@ -168,6 +181,7 @@ class _$GameImpl implements _Game {
       required this.pictureUrl,
       required this.isCrossPlatform,
       required this.maxCoopPlayers,
+      this.isFavorite = false,
       final List<Platform> platforms = const []})
       : _platforms = platforms;
 
@@ -185,8 +199,10 @@ class _$GameImpl implements _Game {
   @override
   final int maxCoopPlayers;
 // App specific fields
+  @override
+  @JsonKey()
+  final bool isFavorite;
   final List<Platform> _platforms;
-// App specific fields
   @override
   @JsonKey()
   List<Platform> get platforms {
@@ -197,7 +213,7 @@ class _$GameImpl implements _Game {
 
   @override
   String toString() {
-    return 'Game(id: $id, name: $name, pictureUrl: $pictureUrl, isCrossPlatform: $isCrossPlatform, maxCoopPlayers: $maxCoopPlayers, platforms: $platforms)';
+    return 'Game(id: $id, name: $name, pictureUrl: $pictureUrl, isCrossPlatform: $isCrossPlatform, maxCoopPlayers: $maxCoopPlayers, isFavorite: $isFavorite, platforms: $platforms)';
   }
 
   @override
@@ -213,6 +229,8 @@ class _$GameImpl implements _Game {
                 other.isCrossPlatform == isCrossPlatform) &&
             (identical(other.maxCoopPlayers, maxCoopPlayers) ||
                 other.maxCoopPlayers == maxCoopPlayers) &&
+            (identical(other.isFavorite, isFavorite) ||
+                other.isFavorite == isFavorite) &&
             const DeepCollectionEquality()
                 .equals(other._platforms, _platforms));
   }
@@ -226,6 +244,7 @@ class _$GameImpl implements _Game {
       pictureUrl,
       isCrossPlatform,
       maxCoopPlayers,
+      isFavorite,
       const DeepCollectionEquality().hash(_platforms));
 
   @JsonKey(ignore: true)
@@ -249,6 +268,7 @@ abstract class _Game implements Game {
       required final String pictureUrl,
       required final bool isCrossPlatform,
       required final int maxCoopPlayers,
+      final bool isFavorite,
       final List<Platform> platforms}) = _$GameImpl;
 
   factory _Game.fromJson(Map<String, dynamic> json) = _$GameImpl.fromJson;
@@ -264,6 +284,8 @@ abstract class _Game implements Game {
   @override
   int get maxCoopPlayers;
   @override // App specific fields
+  bool get isFavorite;
+  @override
   List<Platform> get platforms;
   @override
   @JsonKey(ignore: true)

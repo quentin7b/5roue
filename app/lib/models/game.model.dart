@@ -15,6 +15,7 @@ class Game with _$Game {
     required bool isCrossPlatform,
     required int maxCoopPlayers,
     // App specific fields
+    @Default(false) bool isFavorite,
     @Default([]) List<Platform> platforms,
   }) = _Game;
 

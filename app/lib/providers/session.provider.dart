@@ -48,4 +48,17 @@ class Session extends _$Session {
       _controller.close();
     });
   }
+
+  void playPause() async {
+    GameSession? session = state.asData?.valueOrNull;
+    if (session == null) {
+      return;
+    }
+    if (session.isActive == true) {
+      await ref.read(sessionServiceProvider).pause(sessionId: sessionId);
+    } else {
+      await ref.read(sessionServiceProvider).play(sessionId: sessionId);
+    }
+    _controller.sink.add(session.copyWith(isActive: !session.isActive));
+  }
 }

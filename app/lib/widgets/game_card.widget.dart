@@ -3,14 +3,39 @@ import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:five_wheel/models/game.model.dart';
-import 'package:five_wheel/widgets/platform_icon.widget.dart';
 import 'package:flutter/material.dart';
+
+enum GameCardType {
+  square,
+  line,
+}
 
 class GameCard extends StatelessWidget {
   final bool showTitle;
   final Game game;
+  final GameCardType type;
 
   const GameCard({
+    super.key,
+    required this.game,
+    this.showTitle = true,
+    this.type = GameCardType.square,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return switch (type) {
+      GameCardType.square => SquareGameCard(game: game, showTitle: showTitle),
+      GameCardType.line => LineGameCard(game: game, showTitle: showTitle),
+    };
+  }
+}
+
+class SquareGameCard extends StatelessWidget {
+  final bool showTitle;
+  final Game game;
+
+  const SquareGameCard({
     super.key,
     required this.game,
     this.showTitle = true,
@@ -70,22 +95,6 @@ class GameCard extends StatelessWidget {
                             ),
                           ),
                         ),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: game.platforms
-                              .map(
-                                (p) => Padding(
-                                  padding: const EdgeInsets.only(left: 8),
-                                  child: PlatformIcon(
-                                    platform: p,
-                                  ),
-                                ),
-                              )
-                              .toList(),
-                        ),
-                      ),
                     ],
                   ),
                 ),
@@ -94,6 +103,39 @@ class GameCard extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class LineGameCard extends StatelessWidget {
+  final bool showTitle;
+  final Game game;
+
+  const LineGameCard({
+    super.key,
+    required this.game,
+    this.showTitle = true,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          SizedBox(
+            height: 150,
+            width: 150,
+            child: SquareGameCard(game: game, showTitle: false),
+          ),
+          Expanded(
+            child: Text(
+              game.name,
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

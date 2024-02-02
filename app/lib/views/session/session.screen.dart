@@ -23,6 +23,17 @@ class SessionRoute extends ConsumerWidget {
     this.session,
   });
 
+  void playPauseSessionSearch(WidgetRef ref) {
+    ref
+        .read(
+          sessionProvider(
+            sessionId: sessionId,
+            initialValue: session,
+          ).notifier,
+        )
+        .playPause();
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final s = ref.watch(
@@ -39,7 +50,10 @@ class SessionRoute extends ConsumerWidget {
       ),
       extendBodyBehindAppBar: true,
       body: s.when(
-        data: (data) => SessionView(session: data),
+        data: (data) => SessionView(
+          session: data,
+          onPlayPause: () => playPauseSessionSearch(ref),
+        ),
         error: (error, stackTrace) {
           debugPrintStack(stackTrace: stackTrace);
           return Text(error.toString());
@@ -54,10 +68,12 @@ class SessionRoute extends ConsumerWidget {
 
 class SessionView extends ConsumerWidget {
   final GameSession session;
+  final VoidCallback? onPlayPause;
 
   const SessionView({
     super.key,
     required this.session,
+    this.onPlayPause,
   });
 
   @override
@@ -139,14 +155,15 @@ class SessionView extends ConsumerWidget {
               width: double.infinity,
               height: 48,
               child: ElevatedButton.icon(
-                onPressed: () {},
+                onPressed: onPlayPause,
                 icon: Icon(
-                  session.isOpen
+                  session.isActive
                       ? Icons.pause_outlined
                       : Icons.play_arrow_outlined,
                 ),
                 label: Text(
-                    '${session.isOpen ? 'Mettre en pause' : 'Lancer'} la recherche'),
+                  '${session.isActive ? 'Mettre en pause' : 'Lancer'} la recherche',
+                ),
               ),
             ),
           ],

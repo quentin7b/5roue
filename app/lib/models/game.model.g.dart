@@ -12,6 +12,7 @@ _$GameImpl _$$GameImplFromJson(Map<String, dynamic> json) => _$GameImpl(
       pictureUrl: json['picture_url'] as String,
       isCrossPlatform: json['is_cross_platform'] as bool,
       maxCoopPlayers: json['max_coop_players'] as int,
+      isFavorite: json['is_favorite'] as bool? ?? false,
       platforms: (json['platforms'] as List<dynamic>?)
               ?.map((e) => $enumDecode(_$PlatformEnumMap, e))
               .toList() ??
@@ -25,6 +26,7 @@ Map<String, dynamic> _$$GameImplToJson(_$GameImpl instance) =>
       'picture_url': instance.pictureUrl,
       'is_cross_platform': instance.isCrossPlatform,
       'max_coop_players': instance.maxCoopPlayers,
+      'is_favorite': instance.isFavorite,
       'platforms':
           instance.platforms.map((e) => _$PlatformEnumMap[e]!).toList(),
     };

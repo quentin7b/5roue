@@ -6,8 +6,8 @@ part of 'game_session.model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$SessionImpl _$$SessionImplFromJson(Map<String, dynamic> json) =>
-    _$SessionImpl(
+_$GameSessionImpl _$$GameSessionImplFromJson(Map<String, dynamic> json) =>
+    _$GameSessionImpl(
       id: json['id'] as String,
       game: json['game'] == null
           ? null
@@ -20,9 +20,13 @@ _$SessionImpl _$$SessionImplFromJson(Map<String, dynamic> json) =>
               ?.map((e) => $enumDecode(_$LanguageEnumMap, e))
               .toList() ??
           const [],
+      levelsCriteria: (json['levels_criteria'] as List<dynamic>?)
+              ?.map((e) => GameLevel.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [],
     );
 
-Map<String, dynamic> _$$SessionImplToJson(_$SessionImpl instance) =>
+Map<String, dynamic> _$$GameSessionImplToJson(_$GameSessionImpl instance) =>
     <String, dynamic>{
       'id': instance.id,
       'game': instance.game,
@@ -32,6 +36,7 @@ Map<String, dynamic> _$$SessionImplToJson(_$SessionImpl instance) =>
       'is_active': instance.isActive,
       'languages_criteria':
           instance.languagesCriteria.map((e) => _$LanguageEnumMap[e]!).toList(),
+      'levels_criteria': instance.levelsCriteria,
     };
 
 const _$LanguageEnumMap = {

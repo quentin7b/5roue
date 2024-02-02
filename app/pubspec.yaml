@@ -61,6 +61,7 @@ flutter:
     - assets/i18n/
     - assets/images/
     - assets/images/icons/
+    - assets/images/flags/
 
   fonts:
     - family: NotoSans

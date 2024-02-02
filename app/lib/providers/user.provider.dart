@@ -1,5 +1,6 @@
 import 'package:five_wheel/models/user.model.dart';
 import 'package:five_wheel/providers/services.provider.dart';
+import 'package:flutter/material.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'user.provider.g.dart';
@@ -12,6 +13,10 @@ class CurrentUser extends _$CurrentUser {
   }
 
   Future<void> load() async {
-    state = await ref.read(userServiceProvider).getMe();
+    try {
+      state = await ref.read(userServiceProvider).getMe();
+    } catch (e) {
+      debugPrint('User is null');
+    }
   }
 }

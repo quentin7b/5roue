@@ -1,6 +1,7 @@
 // ignore_for_file: invalid_annotation_target
 
 import 'package:five_wheel/models/game.model.dart';
+import 'package:five_wheel/models/game_level.model.dart';
 import 'package:five_wheel/models/language.model.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -21,7 +22,8 @@ class GameSession with _$GameSession {
     @Default(true) bool isActive,
     // Criterias
     @Default([]) List<Language> languagesCriteria,
-  }) = _Session;
+    @Default([]) List<GameLevel> levelsCriteria,
+  }) = _GameSession;
 
   factory GameSession.fromJson(Map<String, Object?> json) =>
       _$GameSessionFromJson(json);

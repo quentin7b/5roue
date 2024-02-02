@@ -6,24 +6,28 @@ part 'games.provider.g.dart';
 
 @Riverpod(keepAlive: true)
 class Games extends _$Games {
-  List<Game> _games = [];
+  final List<Game> _games = [];
 
   @override
-  AsyncValue<List<Game>> build() {
-    ref.read(gameServiceProvider).getGames().then((value) {
-      _games = value;
-      state = AsyncData(_games);
-    });
-    return const AsyncLoading();
+  FutureOr<List<Game>> build() {
+    return ref.read(gameServiceProvider).getGames().then(
+          (value) => _games
+            ..clear()
+            ..addAll(value),
+        );
   }
 
   void filter(String filter) {
-    state = AsyncData(
-      _games
-          .where(
-            (game) => game.name.toLowerCase().contains(filter.toLowerCase()),
-          )
-          .toList(),
-    );
+    if (filter.isEmpty) {
+      state = AsyncData(_games);
+    } else {
+      state = AsyncData(
+        _games
+            .where(
+              (game) => game.name.toLowerCase().contains(filter.toLowerCase()),
+            )
+            .toList(),
+      );
+    }
   }
 }

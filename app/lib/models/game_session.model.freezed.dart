@@ -15,7 +15,7 @@ final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
 GameSession _$GameSessionFromJson(Map<String, dynamic> json) {
-  return _Session.fromJson(json);
+  return _GameSession.fromJson(json);
 }
 
 /// @nodoc
@@ -30,6 +30,7 @@ mixin _$GameSession {
       throw _privateConstructorUsedError; // User keep the session running
   bool get isActive => throw _privateConstructorUsedError; // Criterias
   List<Language> get languagesCriteria => throw _privateConstructorUsedError;
+  List<GameLevel> get levelsCriteria => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -50,7 +51,8 @@ abstract class $GameSessionCopyWith<$Res> {
       @JsonKey(name: 'search_player_max_count') int maxPlayersCount,
       bool isOpen,
       bool isActive,
-      List<Language> languagesCriteria});
+      List<Language> languagesCriteria,
+      List<GameLevel> levelsCriteria});
 
   $GameCopyWith<$Res>? get game;
 }
@@ -75,6 +77,7 @@ class _$GameSessionCopyWithImpl<$Res, $Val extends GameSession>
     Object? isOpen = null,
     Object? isActive = null,
     Object? languagesCriteria = null,
+    Object? levelsCriteria = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -105,6 +108,10 @@ class _$GameSessionCopyWithImpl<$Res, $Val extends GameSession>
           ? _value.languagesCriteria
           : languagesCriteria // ignore: cast_nullable_to_non_nullable
               as List<Language>,
+      levelsCriteria: null == levelsCriteria
+          ? _value.levelsCriteria
+          : levelsCriteria // ignore: cast_nullable_to_non_nullable
+              as List<GameLevel>,
     ) as $Val);
   }
 
@@ -122,11 +129,11 @@ class _$GameSessionCopyWithImpl<$Res, $Val extends GameSession>
 }
 
 /// @nodoc
-abstract class _$$SessionImplCopyWith<$Res>
+abstract class _$$GameSessionImplCopyWith<$Res>
     implements $GameSessionCopyWith<$Res> {
-  factory _$$SessionImplCopyWith(
-          _$SessionImpl value, $Res Function(_$SessionImpl) then) =
-      __$$SessionImplCopyWithImpl<$Res>;
+  factory _$$GameSessionImplCopyWith(
+          _$GameSessionImpl value, $Res Function(_$GameSessionImpl) then) =
+      __$$GameSessionImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -136,18 +143,19 @@ abstract class _$$SessionImplCopyWith<$Res>
       @JsonKey(name: 'search_player_max_count') int maxPlayersCount,
       bool isOpen,
       bool isActive,
-      List<Language> languagesCriteria});
+      List<Language> languagesCriteria,
+      List<GameLevel> levelsCriteria});
 
   @override
   $GameCopyWith<$Res>? get game;
 }
 
 /// @nodoc
-class __$$SessionImplCopyWithImpl<$Res>
-    extends _$GameSessionCopyWithImpl<$Res, _$SessionImpl>
-    implements _$$SessionImplCopyWith<$Res> {
-  __$$SessionImplCopyWithImpl(
-      _$SessionImpl _value, $Res Function(_$SessionImpl) _then)
+class __$$GameSessionImplCopyWithImpl<$Res>
+    extends _$GameSessionCopyWithImpl<$Res, _$GameSessionImpl>
+    implements _$$GameSessionImplCopyWith<$Res> {
+  __$$GameSessionImplCopyWithImpl(
+      _$GameSessionImpl _value, $Res Function(_$GameSessionImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -160,8 +168,9 @@ class __$$SessionImplCopyWithImpl<$Res>
     Object? isOpen = null,
     Object? isActive = null,
     Object? languagesCriteria = null,
+    Object? levelsCriteria = null,
   }) {
-    return _then(_$SessionImpl(
+    return _then(_$GameSessionImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -190,6 +199,10 @@ class __$$SessionImplCopyWithImpl<$Res>
           ? _value._languagesCriteria
           : languagesCriteria // ignore: cast_nullable_to_non_nullable
               as List<Language>,
+      levelsCriteria: null == levelsCriteria
+          ? _value._levelsCriteria
+          : levelsCriteria // ignore: cast_nullable_to_non_nullable
+              as List<GameLevel>,
     ));
   }
 }
@@ -197,19 +210,21 @@ class __$$SessionImplCopyWithImpl<$Res>
 /// @nodoc
 
 @JsonSerializable(fieldRename: FieldRename.snake)
-class _$SessionImpl implements _Session {
-  const _$SessionImpl(
+class _$GameSessionImpl implements _GameSession {
+  const _$GameSessionImpl(
       {required this.id,
       this.game,
       required this.ownerId,
       @JsonKey(name: 'search_player_max_count') required this.maxPlayersCount,
       this.isOpen = true,
       this.isActive = true,
-      final List<Language> languagesCriteria = const []})
-      : _languagesCriteria = languagesCriteria;
+      final List<Language> languagesCriteria = const [],
+      final List<GameLevel> levelsCriteria = const []})
+      : _languagesCriteria = languagesCriteria,
+        _levelsCriteria = levelsCriteria;
 
-  factory _$SessionImpl.fromJson(Map<String, dynamic> json) =>
-      _$$SessionImplFromJson(json);
+  factory _$GameSessionImpl.fromJson(Map<String, dynamic> json) =>
+      _$$GameSessionImplFromJson(json);
 
   @override
   final String id;
@@ -240,16 +255,25 @@ class _$SessionImpl implements _Session {
     return EqualUnmodifiableListView(_languagesCriteria);
   }
 
+  final List<GameLevel> _levelsCriteria;
+  @override
+  @JsonKey()
+  List<GameLevel> get levelsCriteria {
+    if (_levelsCriteria is EqualUnmodifiableListView) return _levelsCriteria;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_levelsCriteria);
+  }
+
   @override
   String toString() {
-    return 'GameSession(id: $id, game: $game, ownerId: $ownerId, maxPlayersCount: $maxPlayersCount, isOpen: $isOpen, isActive: $isActive, languagesCriteria: $languagesCriteria)';
+    return 'GameSession(id: $id, game: $game, ownerId: $ownerId, maxPlayersCount: $maxPlayersCount, isOpen: $isOpen, isActive: $isActive, languagesCriteria: $languagesCriteria, levelsCriteria: $levelsCriteria)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$SessionImpl &&
+            other is _$GameSessionImpl &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.game, game) || other.game == game) &&
             (identical(other.ownerId, ownerId) || other.ownerId == ownerId) &&
@@ -259,7 +283,9 @@ class _$SessionImpl implements _Session {
             (identical(other.isActive, isActive) ||
                 other.isActive == isActive) &&
             const DeepCollectionEquality()
-                .equals(other._languagesCriteria, _languagesCriteria));
+                .equals(other._languagesCriteria, _languagesCriteria) &&
+            const DeepCollectionEquality()
+                .equals(other._levelsCriteria, _levelsCriteria));
   }
 
   @JsonKey(ignore: true)
@@ -272,24 +298,25 @@ class _$SessionImpl implements _Session {
       maxPlayersCount,
       isOpen,
       isActive,
-      const DeepCollectionEquality().hash(_languagesCriteria));
+      const DeepCollectionEquality().hash(_languagesCriteria),
+      const DeepCollectionEquality().hash(_levelsCriteria));
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$SessionImplCopyWith<_$SessionImpl> get copyWith =>
-      __$$SessionImplCopyWithImpl<_$SessionImpl>(this, _$identity);
+  _$$GameSessionImplCopyWith<_$GameSessionImpl> get copyWith =>
+      __$$GameSessionImplCopyWithImpl<_$GameSessionImpl>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$SessionImplToJson(
+    return _$$GameSessionImplToJson(
       this,
     );
   }
 }
 
-abstract class _Session implements GameSession {
-  const factory _Session(
+abstract class _GameSession implements GameSession {
+  const factory _GameSession(
       {required final String id,
       final Game? game,
       required final String ownerId,
@@ -297,9 +324,11 @@ abstract class _Session implements GameSession {
       required final int maxPlayersCount,
       final bool isOpen,
       final bool isActive,
-      final List<Language> languagesCriteria}) = _$SessionImpl;
+      final List<Language> languagesCriteria,
+      final List<GameLevel> levelsCriteria}) = _$GameSessionImpl;
 
-  factory _Session.fromJson(Map<String, dynamic> json) = _$SessionImpl.fromJson;
+  factory _GameSession.fromJson(Map<String, dynamic> json) =
+      _$GameSessionImpl.fromJson;
 
   @override
   String get id;
@@ -317,7 +346,9 @@ abstract class _Session implements GameSession {
   @override // Criterias
   List<Language> get languagesCriteria;
   @override
+  List<GameLevel> get levelsCriteria;
+  @override
   @JsonKey(ignore: true)
-  _$$SessionImplCopyWith<_$SessionImpl> get copyWith =>
+  _$$GameSessionImplCopyWith<_$GameSessionImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }
